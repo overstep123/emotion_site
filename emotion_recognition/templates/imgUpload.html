@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>图片上传</title>
+</head>
+<body>
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" id="upload" name="img" onchange="UploadImg(this)">
+        {% if url1 %}
+            <img id="upload_img" width="300px" src="{{ url1 }}">
+        {% else %}
+        <img id="upload_img" width="300px">
+        {% endif %}
+        <input type="submit" id="recognition" value="识别" onchange="UploadImg(this)">
+        {% if url2 %}
+            <img id="recognition_img" width="300px" src="{{ url2 }}">
+        {% else %}
+            {% if error %}
+                <p>未识别出人脸</p>
+            {% else %}
+            <img id="recognition_img" width="300px">
+            {% endif %}
+        {% endif %}
+    </form>
+    <a href="/showImg/">show</a>
+
+
+    <script>
+        function UploadImg(obj) {
+            var file = obj.files[0];
+            console.log(obj);
+            console.log(file);
+            console.log("file.size = " + file.size); //file.size 单位为byte
+            var reader = new FileReader();
+            //读取文件过程方法
+            reader.onload = function (e) {
+                console.log("成功读取....");
+                var id = "upload_img"
+                if(obj.id == "recognition"){
+                    id = "recognition_img"
+                }
+                var img = document.getElementById(id);
+                img.src = e.target.result;
+            }
+            reader.readAsDataURL(file)
+        }
+    </script>
+</body>
+</html>

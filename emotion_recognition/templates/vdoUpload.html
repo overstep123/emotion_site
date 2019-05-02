@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>上传视频</title>
+</head>
+<body>
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" id="upload" name="vdo" onchange="UploadVdo(this)">
+        <div id="video">
+            <video src="{{ url }}" controls="controls" id="videoSource" width="500px">
+            </video>
+        </div>
+        <input type="submit" value="识别">
+    </form>
+
+	<script type="text/javascript">
+        function UploadVdo(obj) {
+            var file = obj.files[0];
+            console.log(obj);
+            console.log(file);
+            console.log("file.size = " + file.size); //file.size 单位为byte
+            var reader = new FileReader();
+            //读取文件过程方法
+            reader.onload = function (e) {
+                console.log("成功读取....");
+                var vdo = document.getElementById("videoSource");
+                vdo.src = e.target.result;
+            }
+            reader.readAsDataURL(file)
+        }
+	</script>
+</body>
+</html>
